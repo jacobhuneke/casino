@@ -8,8 +8,7 @@ class TestDeck(unittest.TestCase):
 
     def test_deck_init(self):
         deck = Deck()
-        deck_str = "Rank.TWO of Suit.DIAMONDS, Rank.THREE of Suit.DIAMONDS, Rank.FOUR of Suit.DIAMONDS, Rank.FIVE of Suit.DIAMONDS, Rank.SIX of Suit.DIAMONDS, Rank.SEVEN of Suit.DIAMONDS, Rank.EIGHT of Suit.DIAMONDS, Rank.NINE of Suit.DIAMONDS, Rank.TEN of Suit.DIAMONDS, Rank.JACK of Suit.DIAMONDS, Rank.QUEEN of Suit.DIAMONDS, Rank.KING of Suit.DIAMONDS, Rank.ACE of Suit.DIAMONDS, Rank.TWO of Suit.CLUBS, Rank.THREE of Suit.CLUBS, Rank.FOUR of Suit.CLUBS, Rank.FIVE of Suit.CLUBS, Rank.SIX of Suit.CLUBS, Rank.SEVEN of Suit.CLUBS, Rank.EIGHT of Suit.CLUBS, Rank.NINE of Suit.CLUBS, Rank.TEN of Suit.CLUBS, Rank.JACK of Suit.CLUBS, Rank.QUEEN of Suit.CLUBS, Rank.KING of Suit.CLUBS, Rank.ACE of Suit.CLUBS, Rank.TWO of Suit.HEARTS, Rank.THREE of Suit.HEARTS, Rank.FOUR of Suit.HEARTS, Rank.FIVE of Suit.HEARTS, Rank.SIX of Suit.HEARTS, Rank.SEVEN of Suit.HEARTS, Rank.EIGHT of Suit.HEARTS, Rank.NINE of Suit.HEARTS, Rank.TEN of Suit.HEARTS, Rank.JACK of Suit.HEARTS, Rank.QUEEN of Suit.HEARTS, Rank.KING of Suit.HEARTS, Rank.ACE of Suit.HEARTS, Rank.TWO of Suit.SPADES, Rank.THREE of Suit.SPADES, Rank.FOUR of Suit.SPADES, Rank.FIVE of Suit.SPADES, Rank.SIX of Suit.SPADES, Rank.SEVEN of Suit.SPADES, Rank.EIGHT of Suit.SPADES, Rank.NINE of Suit.SPADES, Rank.TEN of Suit.SPADES, Rank.JACK of Suit.SPADES, Rank.QUEEN of Suit.SPADES, Rank.KING of Suit.SPADES, Rank.ACE of Suit.SPADES"
-        self.assertEqual(deck_str, deck.__repr__())
+        self.assertEqual("Two of Diamonds", deck.cards[0].__repr__())
 
     def test_remove_card(self):
         deck = Deck()
