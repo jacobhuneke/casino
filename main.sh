@@ -1,1 +1,1 @@
-python3 poker/main.py
+python3 -m poker.main

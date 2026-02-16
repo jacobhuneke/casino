@@ -1,1 +1,1 @@
-python3 -m unittest discover -s poker/tests -p "test_*.py"
+python3 -m unittest discover -s poker.tests -p "test_*.py"

@@ -11,6 +11,8 @@ class Player():
         self._hole = []
         self.hand_rank = PokerRank.HIGH_CARD
         self.flop = []
+        self.best_hand = []
+        self.is_tie = False
         
     def __repr__(self):
         card_list = "" 
@@ -26,6 +28,9 @@ class Player():
         if isinstance(other, Player):
             return self.name == other.name and self._hole == other._hole
         return False
+    
+    def get_best_hand(self):
+        return self.best_hand
     
     def get_hand_rank(self):
         return self.hand_rank
@@ -43,23 +48,177 @@ class Player():
         player_cards = self.get_hole()
         flop_combinations = list(combinations(self.flop, 3))
         card_combinations = list(map(lambda x: x + tuple(player_cards), flop_combinations))
-        best_rank = self.hand_rank.value
+        best_rank = self.hand_rank
+        self.best_hand = card_combinations[0]
 
         for combo in card_combinations:
             score = score_combo(combo)
-            print(score)
             if score.value[0] < best_rank.value[0]:
                 continue
             elif score.value[0] > best_rank.value[0]:
                 best_rank = score
+                self.best_hand = combo
             else:
-                pass
-                #compare rank
+                combo2 = compare_tie(self.best_hand, combo, best_rank, self)
+                if combo2 != None:
+                    self.best_hand = combo
         self.hand_rank = best_rank
-        return self.hand_rank.value
+        return self.hand_rank
     
-    def compare_rank(self, combo):
-        pass
+
+#TODO define ties bool
+def compare_tie(combo1, combo2, hand_rank, player):
+    sum1 = 0
+    sum2 = 0
+    for card in combo1:
+        sum1 += card.rank.value[0]
+    for card in combo2:
+        sum2 += card.rank.value[0]
+    num_count = get_num_counts_for_combo(combo1)
+    num_count2 = get_num_counts_for_combo(combo2)
+    keys1 = list(num_count.keys())
+    keys2 = list(num_count2.keys())
+    
+    match hand_rank:
+        case PokerRank.ROYAL_FLUSH:
+            player.is_tie = True
+        case PokerRank.STRAIGHT_FLUSH:
+            if sum1 > sum2:
+                return combo1
+            elif sum1 < sum2:
+                return combo2
+            else:
+                player.is_tie = True
+        case PokerRank.FOUR_OF_A_KIND:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else: 
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    player.is_tie = True
+        case PokerRank.FULL_HOUSE:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else:
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    player.is_tie = True
+        case PokerRank.FLUSH:
+            if sum1 > sum2:
+                return combo1
+            elif sum1 < sum2:
+                return combo2
+            else:
+                player.is_tie = True
+        case PokerRank.STRAIGHT:
+            if sum1 > sum2:
+                return combo1
+            elif sum1 < sum2:
+                return combo2
+            else:
+                player.is_tie = True
+        case PokerRank.THREE_OF_A_KIND:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else:
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    player.is_tie = True
+        case PokerRank.TWO_PAIR:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else:
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    if keys1[2] > keys2[2]:
+                        return combo1
+                    elif keys1[2] < keys2[2]:
+                        return combo2
+                    else:
+                        player.is_tie = True
+        case PokerRank.ONE_PAIR:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else:
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    if keys1[2] > keys2[2]:
+                        return combo1
+                    elif keys1[2] < keys2[2]:
+                        return combo2
+                    else:
+                        if keys1[3] > keys2[3]:
+                            return combo1
+                        elif keys1[3] < keys2[3]:
+                            return combo2
+                        else:
+                            player.is_tie = True
+        case PokerRank.HIGH_CARD:
+            if keys1[0] > keys2[0]:
+                return combo1
+            elif keys1[0] < keys2[0]:
+                return combo2
+            else:
+                if keys1[1] > keys2[1]:
+                    return combo1
+                elif keys1[1] < keys2[1]:
+                    return combo2
+                else:
+                    if keys1[2] > keys2[2]:
+                        return combo1
+                    elif keys1[2] < keys2[2]:
+                        return combo2
+                    else:
+                        if keys1[3] > keys2[3]:
+                            return combo1
+                        elif keys1[3] < keys2[3]:
+                            return combo2
+                        else:
+                            if keys1[4] > keys2[4]:
+                                return combo1
+                            elif keys1[4] < keys2[4]:
+                                return combo2
+                            else:
+                                player.is_tie = True
+    return None
+
+def get_num_counts_for_combo(combo):
+    card1 = combo[0]
+    card2 = combo[1]
+    card3 = combo[2]
+    card4 = combo[3]
+    card5 = combo[4]
+    nums = [card1.rank.value[0], card2.rank.value[0], card3.rank.value[0], card4.rank.value[0], card5.rank.value[0]]
+    nums.sort(reverse=True)
+    num_counter = Counter(nums)
+    sorted_freq = sorted(num_counter.values(), reverse=True)
+    return num_counter
+
 
 
 #combo is five cards. The prior function will go through every combination of five cards, score them, and save the highest ranking hand
@@ -85,7 +244,7 @@ def score_combo(combo):
     nums = [card1.rank.value[0], card2.rank.value[0], card3.rank.value[0], card4.rank.value[0], card5.rank.value[0]]
     nums.sort(reverse=True)
     num_counter = Counter(nums)
-    sorted_freq = sorted(num_counter.values(), reverse=True)
+    sorted_freq = sorted(num_counter.values(), reverse=True)  #cleanup w/ helper
 
     is_low_straight = False
     is_top_straight = False    
@@ -134,3 +293,25 @@ def score_combo(combo):
         return PokerRank.ONE_PAIR
     else:
         return PokerRank.HIGH_CARD
+    
+def get_tie_winner_players(p1, p2):
+    p1_hand = p1.get_best_hand()
+    p2_hand = p2.get_best_hand()
+    hand_rank = p1.get_hand_rank()
+    best_hand = compare_tie(p1_hand, p2_hand, hand_rank, p1)
+    if best_hand == None:
+        p2.is_tie = True
+        return None
+    else:
+        if p1_hand == best_hand:
+            return p1
+        else:
+            return p2
+
+def get_winner(p1, p2):
+    if p1.hand_rank.value[0] > p2.hand_rank.value[0]:
+        return p1
+    elif p1.hand_rank.value[0] < p2.hand_rank.value[0]:
+        return p2
+    else:
+        return get_tie_winner_players(p1, p2)

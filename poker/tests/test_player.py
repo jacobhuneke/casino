@@ -160,3 +160,27 @@ class TestPlayer(unittest.TestCase):
         c5 = Card(Rank.TEN, Suit.HEARTS)
         combo = [c1, c2, c3, c4, c5]
         self.assertEqual(score_combo(combo), PokerRank.FOUR_OF_A_KIND)
+
+    def test_compare_rank(self):
+        c1 = Card(Rank.TEN, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.TEN, Suit.SPADES)
+        c4 = Card(Rank.FOUR, Suit.CLUBS)
+        c5 = Card(Rank.TEN, Suit.HEARTS)
+        combo1 = [c1, c2, c3, c4, c5]
+
+        c6 = Card(Rank.EIGHT, Suit.CLUBS)
+        c7 = Card(Rank.EIGHT, Suit.DIAMONDS)
+        c8 = Card(Rank.EIGHT, Suit.SPADES)
+        c9 = Card(Rank.FOUR, Suit.CLUBS)
+        c10 = Card(Rank.EIGHT, Suit.HEARTS)
+        combo2 = [c6, c7, c8, c9, c10]
+
+        player = Player("Jake")
+       
+        player.add_card(c1)
+        player.add_card(c2)
+        player.flop = [c3, c4, c5]
+
+        player.score_hand()
+        print(player)
