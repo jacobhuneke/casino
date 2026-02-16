@@ -48,9 +48,9 @@ class Player():
         for combo in card_combinations:
             score = score_combo(combo)
             print(score)
-            if score < best_rank:
+            if score.value[0] < best_rank.value[0]:
                 continue
-            elif score > best_rank:
+            elif score.value[0] > best_rank.value[0]:
                 best_rank = score
             else:
                 pass
@@ -84,9 +84,8 @@ def score_combo(combo):
     #determine straight, and duplicate nums (pair-3-4 of a kind)
     nums = [card1.rank.value[0], card2.rank.value[0], card3.rank.value[0], card4.rank.value[0], card5.rank.value[0]]
     nums.sort(reverse=True)
-    num_counter = Counter()
-    for num in nums:
-        num_counter[num] += 1
+    num_counter = Counter(nums)
+    sorted_freq = sorted(num_counter.values(), reverse=True)
 
     is_low_straight = False
     is_top_straight = False    
@@ -119,9 +118,19 @@ def score_combo(combo):
         return PokerRank.ROYAL_FLUSH
     elif is_flush and is_straight:
         return PokerRank.STRAIGHT_FLUSH
+    elif sorted_freq[0] == 4:
+        return PokerRank.FOUR_OF_A_KIND
+    elif sorted_freq[0] == 3 and sorted_freq[1] == 2:
+        return PokerRank.FULL_HOUSE
     elif is_flush:
         return PokerRank.FLUSH
     elif is_straight:
         return PokerRank.STRAIGHT
+    elif sorted_freq[0] == 3:
+        return PokerRank.THREE_OF_A_KIND
+    elif sorted_freq[0] == 2 and sorted_freq[1] == 2:
+        return PokerRank.TWO_PAIR
+    elif sorted_freq[0] == 2:
+        return PokerRank.ONE_PAIR
     else:
         return PokerRank.HIGH_CARD

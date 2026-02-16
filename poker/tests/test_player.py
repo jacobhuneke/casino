@@ -106,3 +106,57 @@ class TestPlayer(unittest.TestCase):
         c5 = Card(Rank.QUEEN, Suit.CLUBS)
         combo = [c1, c2, c3, c4, c5]
         self.assertEqual(score_combo(combo), PokerRank.ROYAL_FLUSH)
+
+    def test_full_house(self):
+        c1 = Card(Rank.TEN, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.TEN, Suit.SPADES)
+        c4 = Card(Rank.THREE, Suit.CLUBS)
+        c5 = Card(Rank.THREE, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.FULL_HOUSE)
+    
+    def test_three_ofa_kind(self):
+        c1 = Card(Rank.TEN, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.TEN, Suit.SPADES)
+        c4 = Card(Rank.FOUR, Suit.CLUBS)
+        c5 = Card(Rank.THREE, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.THREE_OF_A_KIND)
+    
+    def test_two_pair(self):
+        c1 = Card(Rank.TEN, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.NINE, Suit.SPADES)
+        c4 = Card(Rank.THREE, Suit.CLUBS)
+        c5 = Card(Rank.THREE, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.TWO_PAIR)
+
+    def test_one_pair(self):
+        c1 = Card(Rank.EIGHT, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.SEVEN, Suit.SPADES)
+        c4 = Card(Rank.THREE, Suit.CLUBS)
+        c5 = Card(Rank.THREE, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.ONE_PAIR)
+
+    def test_high_card(self):
+        c1 = Card(Rank.EIGHT, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.SEVEN, Suit.SPADES)
+        c4 = Card(Rank.THREE, Suit.CLUBS)
+        c5 = Card(Rank.TWO, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.HIGH_CARD)
+
+    def test_four_ofa_kind(self):
+        c1 = Card(Rank.TEN, Suit.CLUBS)
+        c2 = Card(Rank.TEN, Suit.DIAMONDS)
+        c3 = Card(Rank.TEN, Suit.SPADES)
+        c4 = Card(Rank.FOUR, Suit.CLUBS)
+        c5 = Card(Rank.TEN, Suit.HEARTS)
+        combo = [c1, c2, c3, c4, c5]
+        self.assertEqual(score_combo(combo), PokerRank.FOUR_OF_A_KIND)

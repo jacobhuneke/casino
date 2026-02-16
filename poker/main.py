@@ -1,4 +1,4 @@
-from poker_game import *
+from .poker_game import *
 
 def main():
     p1 = Player("Jake")
