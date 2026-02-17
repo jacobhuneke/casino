@@ -3,6 +3,7 @@ import random
 
 #Rank and Suit enums for cards
 class Rank(Enum) :
+    ACE = 1, "Ace"
     TWO = 2, "Two"
     THREE = 3, "Three"
     FOUR = 4, "Four"
@@ -15,13 +16,14 @@ class Rank(Enum) :
     JACK = 11, "Jack"
     QUEEN = 12, "Queen"
     KING = 13, "King"
-    ACE = 14, "Ace"
+    #ACE = 14, "Ace"
 
-class Suit(Enum) :
-    DIAMONDS = 1, "Diamonds"
-    CLUBS = 2, "Clubs"
-    HEARTS = 3, "Hearts"
-    SPADES = 4, "Spades"
+class Suit(Enum) : 
+    CLUBS = 1, "Clubs"
+    SPADES = 2, "Spades"
+    DIAMONDS = 3, "Diamonds"
+    HEARTS = 4, "Hearts"
+    
 
 #card class, saves one rank and one suit enum
 class Card():
@@ -38,7 +40,7 @@ class Card():
         return False
     
     def get_rank(self):
-        return self.rank.value
+        return self.rank.value[0]
     
     def get_suit(self):
         return self.suit.value

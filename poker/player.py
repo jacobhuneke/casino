@@ -4,7 +4,7 @@ from itertools import combinations
 from collections import Counter
 
 #Player class stores the player's name, the two cards they hold in their hand (hole), and the poker rank of their hand
-#Helper methods to compare players, getters for the hole aand the rank, add cards to the hole
+#Helper methods to compare players, getters for the hole and the rank, add cards to the hole
 class Player():
     def __init__(self, name):
         self.name = name
