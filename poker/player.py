@@ -22,7 +22,8 @@ class Player():
         return f"\nName: {self.name}\nCards: {list}\nHand Rank: {self.hand_rank.value[1]}"
     
     def get_hole(self):
-        return self._hole
+        cards = self._hole.copy()
+        return cards
     
     def __eq__(self, other):
         if isinstance(other, Player):
@@ -30,7 +31,7 @@ class Player():
         return False
     
     def get_best_hand(self):
-        return self.best_hand
+        return self.best_hand.copy()
     
     def get_hand_rank(self):
         return self.hand_rank
@@ -43,15 +44,19 @@ class Player():
                 raise Exception("card is not a card")
         else:
             raise Exception("has max cards in hole")
+        
+    def set_flop(self, flop):
+        self.flop = flop.copy()
+    
     
     def score_hand(self):
         player_cards = self.get_hole()
-        flop_combinations = list(combinations(self.flop, 3))
-        card_combinations = list(map(lambda x: x + tuple(player_cards), flop_combinations))
+        player_cards.extend(self.flop)
+        flop_combinations = list(combinations(player_cards, 5))
         best_rank = self.hand_rank
-        self.best_hand = card_combinations[0]
+        self.best_hand = flop_combinations[0]
 
-        for combo in card_combinations:
+        for combo in flop_combinations:
             score = score_combo(combo)
             if score.value[0] < best_rank.value[0]:
                 continue
@@ -66,7 +71,7 @@ class Player():
         return self.hand_rank
     
 
-#TODO define ties bool
+#TODO compare straights with aces needs to be fixed
 def compare_tie(combo1, combo2, hand_rank, player):
     sum1 = 0
     sum2 = 0
@@ -78,14 +83,21 @@ def compare_tie(combo1, combo2, hand_rank, player):
     num_count2 = get_num_counts_for_combo(combo2)
     keys1 = list(num_count.keys())
     keys2 = list(num_count2.keys())
-    
+
+    one_is_low_straight = False
+    two_is_low_straight = False
+    if sum1 == 28:
+        one_is_low_straight = True
+    if sum2 == 28:
+        two_is_low_straight = True
+
     match hand_rank:
         case PokerRank.ROYAL_FLUSH:
             player.is_tie = True
         case PokerRank.STRAIGHT_FLUSH:
-            if sum1 > sum2:
+            if sum1 > sum2 and one_is_low_straight != True:
                 return combo1
-            elif sum1 < sum2:
+            elif sum1 < sum2 and two_is_low_straight != True:
                 return combo2
             else:
                 player.is_tie = True
@@ -121,9 +133,9 @@ def compare_tie(combo1, combo2, hand_rank, player):
             else:
                 player.is_tie = True
         case PokerRank.STRAIGHT:
-            if sum1 > sum2:
+            if sum1 > sum2 and one_is_low_straight != True:
                 return combo1
-            elif sum1 < sum2:
+            elif sum1 < sum2 and two_is_low_straight != True:
                 return combo2
             else:
                 player.is_tie = True
@@ -216,7 +228,6 @@ def get_num_counts_for_combo(combo):
     nums = [card1.rank.value[0], card2.rank.value[0], card3.rank.value[0], card4.rank.value[0], card5.rank.value[0]]
     nums.sort(reverse=True)
     num_counter = Counter(nums)
-    sorted_freq = sorted(num_counter.values(), reverse=True)
     return num_counter
 
 
@@ -247,9 +258,9 @@ def score_combo(combo):
     sorted_freq = sorted(num_counter.values(), reverse=True)  #cleanup w/ helper
 
     is_low_straight = False
-    is_top_straight = False    
+    is_top_straight = False   
     is_straight = True
-    #check low straight(A2345)
+    #check high straight(A2345)
     if nums[0] == 14 and nums[1] == 5  and nums[2] == 4 and nums[3] == 3 and nums[4] == 2:
         is_low_straight = True
     #check other straights
@@ -261,8 +272,7 @@ def score_combo(combo):
             is_straight = False
         j += 1
         curr = nums[j - 1]
-    
-    #if straight and the top num is an ace, then it is AKQJ10, and the top straight (need for royal flush)
+    #top straight is AKQJT
     if is_straight and nums[0] == 14:
         is_top_straight = True
 

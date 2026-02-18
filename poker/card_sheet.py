@@ -6,13 +6,10 @@ def build_card_map():
     card_map = {}
     col = 0
     row = 1
-    for card in ORDERED_DECK:
-        if card.get_rank() == 14:
-            continue
-        else: 
-            card_name = card.__repr__()
-            card_map[card_name] = (col, row)
-            col += 1
+    for card in ORDERED_DECK: 
+        card_name = card.__repr__()
+        card_map[card_name] = (col, row)
+        col += 1
         if card.get_rank() == 13:
             col = 0
             row += 1

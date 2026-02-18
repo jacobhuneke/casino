@@ -183,4 +183,25 @@ class TestPlayer(unittest.TestCase):
         player.flop = [c3, c4, c5]
 
         player.score_hand()
-        print(player)
+
+        combo3 = compare_tie(combo1, combo2, PokerRank.FOUR_OF_A_KIND, player)
+        self.assertListEqual(combo3, combo1)
+
+    def test_player_six_cards(self):
+        c1 = Card(Rank.TWO, Suit.CLUBS)
+        c2 = Card(Rank.THREE, Suit.DIAMONDS)
+        c3 = Card(Rank.FIVE, Suit.SPADES)
+        c4 = Card(Rank.FOUR, Suit.CLUBS)
+        c5 = Card(Rank.SIX, Suit.HEARTS)
+        c6 = Card(Rank.ACE, Suit.DIAMONDS)
+        c7 = Card(Rank.SEVEN, Suit.CLUBS)
+        player = Player("Jake")
+        player.add_card(c1)
+        player.add_card(c2)
+        player.set_flop([c3, c4, c5])
+        player.set_flop([c3, c4, c5, c6])
+        player.score_hand()
+        print("BEST HAND W ACE", player.best_hand)
+        player.set_flop([c3, c4, c5, c6, c7])
+
+        player.score_hand()

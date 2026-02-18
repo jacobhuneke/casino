@@ -8,7 +8,7 @@ class TestDeck(unittest.TestCase):
 
     def test_deck_init(self):
         deck = Deck()
-        self.assertEqual("Two of Diamonds", deck.cards[0].__repr__())
+        self.assertEqual("Ace of Clubs", deck.cards[0].__repr__())
 
     def test_remove_card(self):
         deck = Deck()
