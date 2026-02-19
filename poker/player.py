@@ -31,7 +31,7 @@ class Player():
         return False
     
     def get_best_hand(self):
-        return self.best_hand.copy()
+        return self.best_hand
     
     def get_hand_rank(self):
         return self.hand_rank
@@ -97,8 +97,12 @@ def compare_tie(combo1, combo2, hand_rank, player):
         case PokerRank.STRAIGHT_FLUSH:
             if sum1 > sum2 and one_is_low_straight != True:
                 return combo1
+            elif sum1 > sum2 and one_is_low_straight == True:
+                return combo2
             elif sum1 < sum2 and two_is_low_straight != True:
                 return combo2
+            elif sum1 < sum2 and two_is_low_straight == True:
+                return combo1
             else:
                 player.is_tie = True
         case PokerRank.FOUR_OF_A_KIND:
@@ -135,8 +139,12 @@ def compare_tie(combo1, combo2, hand_rank, player):
         case PokerRank.STRAIGHT:
             if sum1 > sum2 and one_is_low_straight != True:
                 return combo1
+            elif sum1 > sum2 and one_is_low_straight == True:
+                return combo2
             elif sum1 < sum2 and two_is_low_straight != True:
                 return combo2
+            elif sum1 < sum2 and two_is_low_straight == True:
+                return combo1
             else:
                 player.is_tie = True
         case PokerRank.THREE_OF_A_KIND:
@@ -309,7 +317,9 @@ def get_tie_winner_players(p1, p2):
     p2_hand = p2.get_best_hand()
     hand_rank = p1.get_hand_rank()
     best_hand = compare_tie(p1_hand, p2_hand, hand_rank, p1)
+    print("Best Hand", best_hand)
     if best_hand == None:
+        p1.is_tie = True
         p2.is_tie = True
         return None
     else:

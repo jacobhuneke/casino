@@ -201,7 +201,32 @@ class TestPlayer(unittest.TestCase):
         player.set_flop([c3, c4, c5])
         player.set_flop([c3, c4, c5, c6])
         player.score_hand()
-        print("BEST HAND W ACE", player.best_hand)
         player.set_flop([c3, c4, c5, c6, c7])
 
         player.score_hand()
+        self.assertEqual(player.hand_rank, PokerRank.STRAIGHT)
+
+
+    def test_score_two_straights(self):
+        p1 = Player("Jake")
+        p2 = Player("Lainey")
+        c1 = Card(Rank.TWO, Suit.CLUBS)
+        c2 = Card(Rank.THREE, Suit.DIAMONDS)
+        c3 = Card(Rank.FIVE, Suit.SPADES)
+        c4 = Card(Rank.FOUR, Suit.CLUBS)
+        c5 = Card(Rank.SIX, Suit.HEARTS)
+        c6 = Card(Rank.ACE, Suit.DIAMONDS)
+        c7 = Card(Rank.SEVEN, Suit.CLUBS)
+        p1.add_card(c6)
+        p1.add_card(c1)
+        p2.add_card(c5)
+        p2.add_card(c7)
+        #p1 has ace two
+        #p2 has six seven
+        p1.set_flop([c3, c4, c2])
+        p2.set_flop([c3, c4, c2])
+        p1.score_hand()
+        p2.score_hand()
+
+        print(get_winner(p1, p2))
+        #p2 should win with a higher straight
