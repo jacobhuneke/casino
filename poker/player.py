@@ -321,7 +321,7 @@ def get_tie_winner_players(p1, p2):
     if best_hand == None:
         p1.is_tie = True
         p2.is_tie = True
-        return None
+        return p1
     else:
         if p1_hand == best_hand:
             return p1
@@ -329,9 +329,11 @@ def get_tie_winner_players(p1, p2):
             return p2
 
 def get_winner(p1, p2):
+    p3 = Player("Tie")
     if p1.hand_rank.value[0] > p2.hand_rank.value[0]:
         return p1
     elif p1.hand_rank.value[0] < p2.hand_rank.value[0]:
         return p2
     else:
-        return get_tie_winner_players(p1, p2)
+        winner = get_tie_winner_players(p1, p2)
+        return winner if winner != None else p3
