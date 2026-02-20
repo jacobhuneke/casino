@@ -16,8 +16,6 @@ def player_init_screen(screen):
         bg_rgb=SCREEN_COLOR,
         text_rgb=TEXT_COLOR,
         text="Enter Player 1's Name: ",
-        action=None,
-        active = False
     )
     p2_btn = UIElement(
         center_position=(SCREEN_CENTERX, SCREEN_CENTERY),
@@ -25,8 +23,6 @@ def player_init_screen(screen):
         bg_rgb=SCREEN_COLOR,
         text_rgb=TEXT_COLOR,
         text="Enter Player 2's Name: ",
-        action=None,
-        active = False
     )
     start_btn = UIElement(
         center_position=(SCREEN_CENTERX, SCREEN_CENTERY + 150),
@@ -34,8 +30,9 @@ def player_init_screen(screen):
         bg_rgb=SCREEN_COLOR,
         text_rgb=TEXT_COLOR,
         text="Start Game",
-        action=GameState.POKER_GAME
+        screen_action=GameState.POKER_GAME,
     )
+
     buttons = [p1_btn, p2_btn, start_btn]
     clock = pygame.time.Clock()
 
@@ -49,9 +46,11 @@ def player_init_screen(screen):
                 mouse_up = True
                 if p1_btn.rect.collidepoint(event.pos):
                     p1_btn.name = ""
+                    names["p1"] = ""
                     p1_btn.active = True
                 elif p2_btn.rect.collidepoint(event.pos):
                     p2_btn.name = ""
+                    names["p2"] = ""
                     p2_btn.active = True
                 else:
                     p1_btn.active = False
@@ -93,7 +92,7 @@ def player_init_screen(screen):
         screen.blit(info_surface2, (info_box2.x + 5, info_box2.y + 5))
 
         for button in buttons:
-            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            ui_action = button.screen_update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
                 return ui_action
             button.draw(screen)

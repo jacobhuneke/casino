@@ -10,7 +10,7 @@ def title_screen(screen):
         bg_rgb=SCREEN_COLOR,
         text_rgb=TEXT_COLOR,
         text="Start 2 Player Poker Game",
-        action=GameState.PLAYER_INIT,
+        screen_action=GameState.PLAYER_INIT,
     )
     quit_btn = UIElement(
         center_position=(SCREEN_CENTERX, SCREEN_CENTERY + 150),
@@ -18,7 +18,7 @@ def title_screen(screen):
         bg_rgb=SCREEN_COLOR,
         text_rgb=TEXT_COLOR,
         text="Quit",
-        action=GameState.QUIT,
+        screen_action=GameState.QUIT,
     )
 
     buttons = [start_btn, quit_btn]
@@ -34,7 +34,7 @@ def title_screen(screen):
         screen.fill(SCREEN_COLOR)
 
         for button in buttons:
-            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            ui_action = button.screen_update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
                 return ui_action
             button.draw(screen)

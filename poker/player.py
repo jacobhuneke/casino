@@ -13,7 +13,10 @@ class Player():
         self.flop = []
         self.best_hand = []
         self.is_tie = False
-        
+        self.cash = 10.00
+        self.folded = False
+        self.win_count = 0
+
     def __repr__(self):
         card_list = "" 
         for card in self._hole:
@@ -47,9 +50,24 @@ class Player():
         
     def set_flop(self, flop):
         self.flop = flop.copy()
-    
+        
+    def reset_player(self):
+        self._hole = []
+        self.hand_rank = PokerRank.HIGH_CARD
+        self.flop = []
+        self.best_hand = []
+        self.is_tie = False
+        self.folded = False
+
+    def bet(self, amount):
+        if amount > self.cash:
+            return ValueError("Player has less cash than the bet")
+        else:
+            self.cash -= amount
     
     def score_hand(self):
+        if self.flop == []:
+            return self.hand_rank
         player_cards = self.get_hole()
         player_cards.extend(self.flop)
         flop_combinations = list(combinations(player_cards, 5))
@@ -317,7 +335,6 @@ def get_tie_winner_players(p1, p2):
     p2_hand = p2.get_best_hand()
     hand_rank = p1.get_hand_rank()
     best_hand = compare_tie(p1_hand, p2_hand, hand_rank, p1)
-    print("Best Hand", best_hand)
     if best_hand == None:
         p1.is_tie = True
         p2.is_tie = True
@@ -337,3 +354,4 @@ def get_winner(p1, p2):
     else:
         winner = get_tie_winner_players(p1, p2)
         return winner if winner != None else p3
+

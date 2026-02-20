@@ -46,11 +46,10 @@ class PokerGame():
     def set_flop(self):
         for player in self.players:
             player.flop = self.flop.copy()
-
     
     def get_flop(self):
         return self.flop
-    
+
     def __repr__(self):
         string = "Welcome to the Poker Game!\n"
         string += "Players are: "
@@ -63,4 +62,8 @@ class PokerGame():
         string = string.removesuffix(", ")
         return string
 
-
+    def reset_game(self):
+        self.deck = Deck()
+        self.deck.shuffle_deck()
+        self.deck.shuffle_deck()
+        self.flop = []
