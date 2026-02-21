@@ -99,8 +99,8 @@ def compare_tie(combo1, combo2, hand_rank, player):
         sum2 += card.rank.value[0]
     num_count = get_num_counts_for_combo(combo1)
     num_count2 = get_num_counts_for_combo(combo2)
-    keys1 = list(num_count.keys())
-    keys2 = list(num_count2.keys())
+    keys1 = [item[0] for item in num_count.most_common()]
+    keys2 = [item[0] for item in num_count2.most_common()]
 
     one_is_low_straight = False
     two_is_low_straight = False
@@ -176,7 +176,12 @@ def compare_tie(combo1, combo2, hand_rank, player):
                 elif keys1[1] < keys2[1]:
                     return combo2
                 else:
-                    player.is_tie = True
+                    if keys1[2] > keys2[2]:
+                        return combo1
+                    elif keys1[2] < keys2[2]:
+                        return combo2
+                    else:
+                        player.is_tie = True
         case PokerRank.TWO_PAIR:
             if keys1[0] > keys2[0]:
                 return combo1

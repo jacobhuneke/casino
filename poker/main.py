@@ -5,10 +5,9 @@ from poker.UIElement import *
 from poker.play_game_screen import *
 from poker.title_screen import *
 from poker.player_init_screen import *
+from poker.win_screen import *
 import pygame
 
-#TODO create points/currency
-#TODO Fix Ties, straight when one is low and other is 76543 or 87654
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -29,6 +28,9 @@ def main():
         if game_state == GameState.POKER_GAME:
             log_event("play_game_screen")
             game_state = play_game(screen)
+        if game_state == GameState.WIN:
+            log_event("win_screen")
+            game_state = win_screen(screen)
         if game_state == GameState.QUIT:
             pygame.quit()
             log_event("quit_game")

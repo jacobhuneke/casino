@@ -91,13 +91,17 @@ class GameState(Enum):
     TITLE = 0
     POKER_GAME = 1
     PLAYER_INIT = 2
+    WIN = 3
     NAME = 25
 
 class PokerFuncs(Enum):
+    END_GAME = 0
     DEAL = 1
     CALL = 2
     BET = 3
     FOLD = 4
     TURN = 5
-    END_GAME = 0
+    HALF_POT = 6
+    POT = 7
+    TWO_POT = 8
     NEW_GAME = 10
