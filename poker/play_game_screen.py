@@ -196,7 +196,6 @@ def play_game(screen):
             #if it is the first time to call, three cards are dealt. the second and third time one card are dealt
             #boolean values are used to track which card should be dealt
             #after the fifth card there is a winner. 
-            #TODO there should be another round of betting after the fifth card is dealt, and a call to reveal all the cards and the winner
             case PokerFuncs.CALL:
                 if matched_bet != True:
                     turn.cash -= current_bet
@@ -232,13 +231,14 @@ def play_game(screen):
                     turn = p1
                     rivered = True
                     func_state = PokerFuncs.TURN
+                elif turned and rivered and turn == p2:
                     is_winner = True
                     winner.win_count += 1
                     winner.cash += pot_amount
                     winners["winner"] = winner.name
                     log_event("rivered_card")
                     log_event(f"{winner.name}_won${pot_amount:.2f}_with_{winner.hand_rank.value[1]} and cards {winner.best_hand}")
-                func_state = PokerFuncs.END_GAME if p1.cash <= 0.0 or p2.cash <= 0.0 else PokerFuncs.TURN
+                    func_state = PokerFuncs.END_GAME if p1.cash <= 0.0 or p2.cash <= 0.0 else PokerFuncs.TURN
                 #if either player folds, the other player wins. They obtain the pot
             case PokerFuncs.FOLD:
                 if turn == p1:

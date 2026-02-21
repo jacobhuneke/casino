@@ -1,4 +1,4 @@
-# casino
+# Casino
 
 ## Poker instructions
 I had grand plans to code a whole casino with various games, money, and challenges, then converting it all to html to practice using guis and html.
